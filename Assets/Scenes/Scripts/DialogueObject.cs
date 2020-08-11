@@ -53,7 +53,7 @@ public class DialogueObject : MonoBehaviour
        /// overide to string
        /// </summary>
        /// <returns>
-       /// string with info of j
+       /// string with info of 
        /// </returns>
         public override string ToString()
         {
@@ -67,25 +67,37 @@ public class DialogueObject : MonoBehaviour
         string title;
         Dictionary<string, Node> nodes;
         string titleOfStartNode;
+        /// <summary>
+        /// constructor that parse from twine text to node
+        /// </summary>
+        /// <param name="twineText">twine text</param>
         public Dialogue(TextAsset twineText)
         {
-
             nodes = new Dictionary<string, Node>();
-
             ParseTwineText(twineText);
         }
-
+        /// <summary>
+        /// get node by node title
+        /// </summary>
+        /// <param name="nodeTitle"></param>
+        /// <returns>return specific node</returns>
         public Node GetNode(string nodeTitle)
         {
             return nodes[nodeTitle];
         }
-
+        /// <summary>
+        /// get start node 
+        /// </summary>
+        /// <returns> srart node</returns>
         public Node GetStartNode()
         {
             UnityEngine.Assertions.Assert.IsNotNull(titleOfStartNode);
             return nodes[titleOfStartNode];
         }
-
+        /// <summary>
+        /// convert text from twine to object node
+        /// </summary>
+        /// <param name="twineText"> the twine text you want to change</param>
         public void ParseTwineText(TextAsset twineText)
         {
             string text = twineText.text;
@@ -131,7 +143,7 @@ public class DialogueObject : MonoBehaviour
                 // Extract Message Text & Responses
                 string messsageText = currLineText.Substring(endOfFirstLine, startOfResponses - endOfFirstLine).Trim();
                 string responseText = currLineText.Substring(startOfResponses).Trim();
-
+                
                 Node curNode = new Node();
                 curNode.title = title;
                 curNode.text = messsageText;
@@ -147,45 +159,49 @@ public class DialogueObject : MonoBehaviour
                 // With Message Format: "\r\n Message[[Response One]]"
                 // Message-less Format: "\r\n [[Response One]]"
                 curNode.responses = new List<Response>();
+                nodes[curNode.title] = curNode;
                 if (!lastNode)
+                    parseResponse(curNode, responseText);
+            }
+        }
+        /// <summary>
+        ///parse a text to a response
+        /// </summary>
+        /// <param name="responses"></param>
+        private void parseResponse(Node node,string textToParse)
+        {
+                List<string> responseData = new List<string>(textToParse.Split(new string[] { "\r\n" }, StringSplitOptions.None));
+                for (int k = responseData.Count - 1; k >= 0; k--)
                 {
-                    List<string> responseData = new List<string>(responseText.Split(new string[] { "\r\n" }, StringSplitOptions.None));
-                    for (int k = responseData.Count - 1; k >= 0; k--)
+                    string curResponseData = responseData[k];
+
+                    if (string.IsNullOrEmpty(curResponseData))
                     {
-                        string curResponseData = responseData[k];
+                        responseData.RemoveAt(k);
+                        continue;
+                    }
 
-                        if (string.IsNullOrEmpty(curResponseData))
-                        {
-                            responseData.RemoveAt(k);
-                            continue;
-                        }
+                    // If message-less, then destination is the message
+                    Response curResponse = new Response();
+                    int destinationStart = curResponseData.IndexOf("[[");
+                    int destinationEnd = curResponseData.IndexOf("]]");
+                    string destination = curResponseData.Substring(destinationStart + 2, (destinationEnd - destinationStart) - 2);
 
-                        // If message-less, then destination is the message
-                        Response curResponse = new Response();
-                        int destinationStart = curResponseData.IndexOf("[[");
-                        int destinationEnd = curResponseData.IndexOf("]]");
-                        string destination = curResponseData.Substring(destinationStart + 2, (destinationEnd - destinationStart) - 2);
-
-                        if (destination.Contains("|") == true)
-                        {
-                            curResponse.destinationNode = destination.Split('|')[1] + "";
-                            destination = destination.Split('|')[0] + "";
-                        }
-                        else
+                    if (destination.Contains("|") == true)
+                    {
+                        curResponse.destinationNode = destination.Split('|')[1] + "";
+                        destination = destination.Split('|')[0] + "";
+                    }
+                    else
                         curResponse.destinationNode = destination;
 
-                        //curResponse.destinationNode = destination;
-                        if (destinationStart == 0)
-                            curResponse.displayText = destination;
-                        else
-                            curResponse.displayText = curResponseData.Substring(0, destinationStart);
-                        curNode.responses.Add(curResponse);
-                    }
+                    //curResponse.destinationNode = destination;
+                    if (destinationStart == 0)
+                        curResponse.displayText = destination;
+                    else
+                        curResponse.displayText = curResponseData.Substring(0, destinationStart);
+                    node.responses.Add(curResponse);
                 }
-
-
-                nodes[curNode.title] = curNode;
-            }
         }
     }
 }
