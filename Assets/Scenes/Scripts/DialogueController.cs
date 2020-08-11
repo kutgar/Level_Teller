@@ -12,29 +12,39 @@ public class DialogueController : MonoBehaviour
     public delegate void NodeEnteredHandler(Node node);
     public event NodeEnteredHandler onEnteredNode;
 
+    /// <summary>
+    /// get current node
+    /// </summary>
+    /// <returns>current node</returns>
     public Node GetCurrentNode()
     {
         return curNode;
     }
 
+    /// <summary>
+    /// initialize  dialogue with twine text
+    /// </summary>
     public void InitializeDialogue()
-    {
-
+    { 
         curDialogue = new Dialogue(twineText);
-
         curNode = curDialogue.GetStartNode();
-
         onEnteredNode(curNode);
     }
-
+    /// <summary>
+    /// get current responses
+    /// </summary>
+    /// <returns> curernt responses</returns>
     public List<Response> GetCurrentResponses()
     {
         return curNode.responses;
     }
 
+    /// <summary>
+    /// choose response by index 
+    /// </summary>
+    /// <param name="responseIndex"></param>
     public void ChooseResponse(int responseIndex)
     {
-
         string nextNodeID = curNode.responses[responseIndex].destinationNode;
         Node nextNode = curDialogue.GetNode(nextNodeID);
         curNode = nextNode;

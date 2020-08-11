@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static DialogueObject;
-
+   
 public class StoryController : MonoBehaviour
 {
     DialogueController controller;
@@ -13,19 +13,10 @@ public class StoryController : MonoBehaviour
         controller = GetComponent<DialogueController>();
        controller.onEnteredNode += OnNodeEntered;
         controller.InitializeDialogue();
-
-        
-        
-        OnNodeSelected(0);
-        OnNodeSelected(1);
-        OnNodeSelected(0);
-        OnNodeSelected(1);
+       // OnNodeSelected(1);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+    
     public void OnNodeEntered(Node newNode)
     {
 
@@ -45,6 +36,6 @@ public class StoryController : MonoBehaviour
     {
         Debug.Log("Chose: " + indexChosen);
         if (!controller.GetCurrentNode().IsEndNode())
-        controller.ChooseResponse(indexChosen);
+            controller.ChooseResponse(indexChosen);
     }
 }

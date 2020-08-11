@@ -171,13 +171,13 @@ public class DialogueObject : MonoBehaviour
         private void parseResponse(Node node,string textToParse)
         {
                 List<string> responseData = new List<string>(textToParse.Split(new string[] { "\r\n" }, StringSplitOptions.None));
-                for (int k = responseData.Count - 1; k >= 0; k--)
+                for (int i = responseData.Count - 1; i >= 0;i--)
                 {
-                    string curResponseData = responseData[k];
+                    string curResponseData = responseData[i];
 
                     if (string.IsNullOrEmpty(curResponseData))
                     {
-                        responseData.RemoveAt(k);
+                        responseData.RemoveAt(i);
                         continue;
                     }
 
