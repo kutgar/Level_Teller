@@ -1,0 +1,78 @@
+:: StoryTitle
+level_teller
+
+:: UserScript[script]
+
+
+:: UserStylesheet[stylesheet]
+
+
+:: openingGetName[scene-1.0]
+ohh you realy has come here you son of pigeon 
+so tell me about your self
+hmmm hmmm 
+yes yes boring 
+just write your name here and we shall pass 
+[[urielEnd]]
+[[doronEnd]]
+[[regularPath]]
+
+
+:: regularPath[scene-2.0]
+welcome $name, 
+nice to meet you 
+so I want to tell more about the game 
+but I tired 
+let skip that 
+just be straight with you 
+the game are not ready at all 
+no characters,background or any other assets.
+so I need a help with that can you help?
+[[yes|yesMakeACharacter]]
+[[no|noMakeACharacter]]
+
+:: urielEnd[scene-0.3]
+ha ha ha,
+you activate my trap card,
+just kidding,
+you was a fine human/lizard 
+but sorry for you I write this thing 
+so it was fine journey 
+
+[[END]]
+
+:: doronEnd[scene-0.4]
+Double-click this passage to edit it.
+[[END]]
+
+:: END[END scene-0.2]
+was fine
+
+:: START[START scene-0.1]
+tam tam tam
+[[openingGetName]]
+
+:: yesMakeACharacter[scene-2.1]
+wow that easy 
+you dont resist at all 
+ahh fine.
+I except you for more 
+[[continue|makeACharacter]]
+
+
+:: noMakeACharacter[scene-2.2]
+wow that mean,
+you can be more posstive?
+help with that, 
+I wanna make your game good,
+you stupid,baka.
+uriel will remember that 
+[[continue|makeACharacter]]
+
+:: makeACharacter[scene-2.3]
+drawning lalala
+
+
+
+
+[[END]]
