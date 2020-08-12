@@ -31,7 +31,7 @@ so I need a help with that can you help?
 [[yes|yesMakeACharacter]]
 [[no|noMakeACharacter]]
 
-:: urielEnd[scene-e.1]
+:: urielEnd[scene-0.3]
 ha ha ha,
 you activate my trap card,
 just kidding,
@@ -41,20 +41,20 @@ so it was fine journey
 
 [[END]]
 
-:: doronEnd[scene-e.2]
+:: doronEnd[scene-0.4]
 Double-click this passage to edit it.
 [[END]]
 
-:: END[END scene-e]
+:: END[END scene-0.2]
 was fine
 
-:: START[START scene-s]
+:: START[START scene-0.1]
 tam tam tam
 [[openingGetName]]
 
 :: yesMakeACharacter[scene-2.1]
 wow that easy 
-you dont ressit at all 
+you dont resist at all 
 ahh fine.
 I except you for more 
 [[continue|makeACharacter]]

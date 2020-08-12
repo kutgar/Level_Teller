@@ -88,6 +88,8 @@ public class StoryController : MonoBehaviour
         int.TryParse(desireSceneNumber, out sceneNumber);
         moveToScene(sceneNumber);
     }
+
+    #region tagHandler
     /// <summary>
     /// check if the the string start with 'scene'
     /// </summary>
@@ -100,7 +102,6 @@ public class StoryController : MonoBehaviour
         else
             return false;
     }
-    
     /// <summary>
     /// delegate for return specific tags
     /// </summary>
@@ -128,6 +129,8 @@ public class StoryController : MonoBehaviour
         }
         return tags;
     }
+    #endregion 
+
     /// <summary>
     /// choose response 
     /// </summary>
@@ -148,8 +151,8 @@ public class StoryController : MonoBehaviour
         if (!controller.GetCurrentNode().IsEndNode())
             controller.ChooseResponse(getResponse(sort, desireResponse, controller.GetCurrentResponses()));
     }
-    
-    
+
+    #region responseHandler
     /// <summary>
     /// delegate for return specific response
     /// </summary>
@@ -192,4 +195,5 @@ public class StoryController : MonoBehaviour
         else
             return false;
     }
+    #endregion 
 }

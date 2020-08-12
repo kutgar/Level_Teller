@@ -60,7 +60,9 @@ public class DialogueObject : MonoBehaviour
         }
 
     }
-
+    /// <summary>
+    /// convert twine text into nodes 
+    /// </summary>
     public class Dialogue
     {
         string title;
