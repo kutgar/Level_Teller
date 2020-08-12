@@ -9,12 +9,13 @@ public class StoryController : MonoBehaviour
     DialogueController controller;
     public int delayScene;
     const string flagTagScene = "scene-";
-    const string flagSperateTagScenceAndIncident = ".";
+    public char flagSperateTagScenceAndIncident = '.';
     private static bool created = false;
-    private static string currentdScene = "";
-
+    public string currentdScene = "";
+    public delegate void onStorySceneHandler(string currentdScene);
+    public event onStorySceneHandler onStoryScene;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         manageSingleController();
         controller = GetComponent<DialogueController>();
@@ -49,23 +50,22 @@ public class StoryController : MonoBehaviour
         {
             int currentChoiceIndex = i;
             var response = newNode.responses[i];
-            Debug.Log(newNode.ToString());
-
-
+        
             tag = getTags(newNode, getSceneTags)[0];
 
-            Debug.Log(tag);
+    
             tag = tag.Replace(flagTagScene, "");
             currentdScene = tag;
-            Debug.Log(tag);
-            if (tag.Contains(flagSperateTagScenceAndIncident))
+
+            if (tag.Contains(flagSperateTagScenceAndIncident+""))
                 tag = tag.Substring(0, tag.IndexOf(flagSperateTagScenceAndIncident));//get only scene number
-            Debug.Log(tag);
+
             moveToScene(tag);
             //  var responceButton = Instantiate(prefab_btnResponse, parentOfResponses);
             //  responceButton.GetComponentInChildren<SlowTyper>().Begin(response.displayText);
             //    responceButton.onClick.AddListener(delegate { OnNodeSelected(currentChoiceIndex); });
         }
+        onStoryScene(currentdScene);
     }
     /// <summary>
     /// move to scene by number name 
@@ -151,7 +151,7 @@ public class StoryController : MonoBehaviour
         if (!controller.GetCurrentNode().IsEndNode())
             controller.ChooseResponse(getResponse(sort, desireResponse, controller.GetCurrentResponses()));
     }
-
+  
     #region responseHandler
     /// <summary>
     /// delegate for return specific response
