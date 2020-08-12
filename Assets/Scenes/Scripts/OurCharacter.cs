@@ -13,14 +13,16 @@ public class OurCharacter : MonoBehaviour, ICharacter
     private float currentHealth, currentArmor, currentStrength, currentSpeed;
     private bool isAlive;
     private Rigidbody2D rb2d;
+    private Character4D Character4DContreoler;
+    private CharacterAnimation CharacterAnimationContreoler;
 
-    
+    public OurCharacter() { }
 
     /// <summary>
     /// Constractor
     /// </summary>
     /// <param name="rb2d">rigibody 2d of the charecter</param>
-    public OurCharacter(Rigidbody2D rb2d)
+    public OurCharacter(Rigidbody2D rb2d, Character4D script4D, CharacterAnimation scriptAnimation)
     {
         this.items = new List<int>();
         this.baseHealth = BASE_HEALTH;
@@ -32,6 +34,8 @@ public class OurCharacter : MonoBehaviour, ICharacter
         this.baseSpeed = 3;
         Speed();
 
+        this.Character4DContreoler = script4D;
+        this.CharacterAnimationContreoler = scriptAnimation;
         this.isAlive = true;
         this.rb2d = rb2d;
     }
@@ -128,22 +132,40 @@ public class OurCharacter : MonoBehaviour, ICharacter
     /// <summary>
     /// Move the charecter
     /// </summary>
-    /// <param name="dir">direction for player to move</param>
+    /// <param name="dir">direction for player to move [{-1,0,1},{-1,0,1}]</param>
     /// <param name="startposition">(Vector2)transform.position</param>
-    public void Move(Vector2 dir,Vector2 startposition)
+    /// /// <param name="dirToLook">direction for player to look</param>
+    public void Move(Vector2 dirToLook, Vector2 dir, Vector2 startposition)
     {
-        this.rb2d.MovePosition(startposition + (dir * this.currentSpeed * Time.deltaTime));
+        if (dir != Vector2.zero)
+        {
+            this.rb2d.MovePosition(startposition + (dir * this.currentSpeed * Time.deltaTime));
+            CharacterAnimationContreoler.SetState(CharacterState.Walk); // walk
+        }
+        else
+        {
+            CharacterAnimationContreoler.SetState(CharacterState.Idle); // Idle
+        }
+        if (dirToLook != Vector2.zero)// if dir is [1,-1]
+        {
+            // i want left and right to be dominante
+            Character4DContreoler.SetDirection(dirToLook);
+        }
+    }
+
+    public void Attack()
+    {
+        CharacterAnimationContreoler.Attack();
     }
 
 
 
-   
 
 
 
 
 
-    // get set
+    #region get set 
     public List<int> Iteams   // property
     {
         get { return items; }   
@@ -185,6 +207,6 @@ public class OurCharacter : MonoBehaviour, ICharacter
             Speed();
         }  
     }
-
+    #endregion
 
 }

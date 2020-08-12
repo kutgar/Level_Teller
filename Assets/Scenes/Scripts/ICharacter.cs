@@ -11,7 +11,7 @@ public interface ICharacter
     // Calculates The Armor of a Character
     void Armor();
     // Move Fuanction
-    void Move(Vector2 dir, Vector2 startposition);
+    void Move(Vector2 dirToLook, Vector2 dir, Vector2 startposition);
     // Attack Fuanction
     void Strength();
     // IsAlive Fuanction returns true/false
