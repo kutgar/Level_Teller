@@ -13,9 +13,7 @@ so tell me about your self
 hmmm hmmm 
 yes yes boring 
 just write your name here and we shall pass 
-[[urielEnd]]
-[[doronEnd]]
-[[regularPath]]
+[[this name all ready occupied|thisNameAllreadyOccupied]]
 
 
 :: regularPath[scene-2.0]
@@ -48,7 +46,7 @@ Double-click this passage to edit it.
 :: END[END scene-0.2]
 was fine
 
-:: START[START scene-0.1]
+:: START[START scene-0.0]
 tam tam tam
 [[openingGetName]]
 
@@ -70,9 +68,52 @@ uriel will remember that
 [[continue|makeACharacter]]
 
 :: makeACharacter[scene-2.3]
-drawning lalala
+drawning lalalalala 
 
+opshi daisy 
+
+
+ohhh bwaa so hideous
+that even a character 
+
+if you want I can give you my charcter?
+[[narratorCharcter]]
+[[your charcter]]
+
+
+
+:: narratorCharcter
+ohh you have a good eye I see.
+so your jouerny start now.
+investigate the world and shall the narrator be with you. 
+
+[[continue|chooseYourMovement]]
+
+:: your charcter
+you can't be serious, 
+it is look like you try to draw pile of sh@t 
+you sure? 
+you can still regret the
+
+[[regret that|regretCharacterNarrator]] 
+[[continue|chooseYourMovement]]
+
+:: chooseYourMovement
 
 
 
 [[END]]
+
+:: regretCharacterNarrator
+you have luck I am so kind.
+all your friend would envy you right now. 
+
+
+[[continue|chooseYourMovement]]
+
+:: thisNameAllreadyOccupied[scene-1.1]
+this username has taken
+please try again 
+[[urielEnd]]
+[[doronEnd]]
+[[regularPath]]

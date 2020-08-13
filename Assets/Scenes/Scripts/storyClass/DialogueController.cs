@@ -40,10 +40,19 @@ public class DialogueController : MonoBehaviour
         onEnteredNode(curNode);
     }
     /// <summary>
+    /// find title by tag
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <returns></returns>
+    public string findTitleNameWithTag(string tag)
+    {
+        return curDialogue.findTitleNameWithTag(tag);
+    }
+    /// <summary>
     /// get current responses
     /// </summary>
     /// <returns> curernt responses</returns>
-    public List<Response> GetCurrentResponses()
+        public List<Response> GetCurrentResponses()
     {
         return curNode.responses;
     }
