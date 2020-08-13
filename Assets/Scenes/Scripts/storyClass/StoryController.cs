@@ -8,13 +8,16 @@ public class StoryController : MonoBehaviour
 {
     DialogueController controller;
     public int delayScene;
-    const string flagTagScene = "scene-";
-    const string flagSperateTagScenceAndIncident = ".";
+ 
+    public char flagSperateTagScenceAndIncident = '.';
     private static bool created = false;
-    private static string currentdScene = "";
-
+    public string currentdScene = "";
+    public Node currentNode = new Node();
+    public delegate void onStorySceneHandler(string currentdScene);
+    public event onStorySceneHandler onStoryScene;
+    public string name = "";
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         manageSingleController();
         controller = GetComponent<DialogueController>();
@@ -49,34 +52,33 @@ public class StoryController : MonoBehaviour
         {
             int currentChoiceIndex = i;
             var response = newNode.responses[i];
-            Debug.Log(newNode.ToString());
-
-
             tag = getTags(newNode, getSceneTags)[0];
-
-            Debug.Log(tag);
             tag = tag.Replace(flagTagScene, "");
             currentdScene = tag;
-            Debug.Log(tag);
-            if (tag.Contains(flagSperateTagScenceAndIncident))
+            if (tag.Contains(flagSperateTagScenceAndIncident+""))
                 tag = tag.Substring(0, tag.IndexOf(flagSperateTagScenceAndIncident));//get only scene number
-            Debug.Log(tag);
             moveToScene(tag);
             //  var responceButton = Instantiate(prefab_btnResponse, parentOfResponses);
             //  responceButton.GetComponentInChildren<SlowTyper>().Begin(response.displayText);
             //    responceButton.onClick.AddListener(delegate { OnNodeSelected(currentChoiceIndex); });
         }
+        currentNode = newNode;
+        onStoryScene?.Invoke(currentdScene);
     }
     /// <summary>
     /// move to scene by number name 
     /// </summary>
     /// <param name="sceneNumber"></param>
-    private void moveToScene(int sceneNumber)
+    public void moveToScene(int sceneNumber)
     {
         if (sceneNumber == null)
             return;
-        if (SceneManager.GetActiveScene().buildIndex!= delayScene + sceneNumber)
-          SceneManager.LoadScene(delayScene + sceneNumber);
+        if (SceneManager.GetActiveScene().buildIndex != delayScene + sceneNumber)
+        {
+            if (!currentdScene.StartsWith((delayScene + sceneNumber) + ""))
+                controller.setCurrentNode(controller.findTitleNameWithTag((delayScene + sceneNumber) + ".0"));
+            SceneManager.LoadScene(delayScene + sceneNumber);
+        }
     }
     /// <summary>
     /// only a numbers should go to load scene
@@ -135,7 +137,7 @@ public class StoryController : MonoBehaviour
     /// choose response 
     /// </summary>
     /// <param name="indexChosen">index of the desire response</param>
-    private void OnNodeSelected(int indexChosen)
+    public void OnNodeSelected(int indexChosen)
     {
         Debug.Log("Chose: " + indexChosen);
         if (!controller.GetCurrentNode().IsEndNode())
@@ -146,10 +148,15 @@ public class StoryController : MonoBehaviour
     /// </summary>
     /// <param name="desireResponse"></param>
     /// <param name="sort"></param>
-    private void OnNodeSelected(string desireResponse, filterRespons sort)
+    public void OnNodeSelected(string desireResponse, filterRespons sort)
     {
         if (!controller.GetCurrentNode().IsEndNode())
             controller.ChooseResponse(getResponse(sort, desireResponse, controller.GetCurrentResponses()));
+    }
+    public void OnNodeSelected(string desireResponse)
+    {
+        
+            controller.ChooseResponse(getResponse(chooseResponseByDisplayName, desireResponse, controller.GetCurrentResponses()));
     }
 
     #region responseHandler
@@ -158,7 +165,7 @@ public class StoryController : MonoBehaviour
     /// </summary>
     /// <param name="tag"></param>
     /// <returns></returns>
-    delegate bool filterRespons(Response response, string desireResponse);
+    public  delegate bool filterRespons(Response response, string desireResponse);
     /// <summary>
     /// get response from a node 
     /// </summary>
@@ -169,7 +176,6 @@ public class StoryController : MonoBehaviour
     /// </returns>
     private int getResponse(filterRespons sort, string desireResponse,List<Response> responses)
     {
-
         int index = 0;
         for (index = 0; index < responses.Count - 1; index++)
         {

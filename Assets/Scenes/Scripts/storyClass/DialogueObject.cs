@@ -8,7 +8,7 @@ public class DialogueObject : MonoBehaviour
     //key name for start node 
     private const string keyStartNode = "START";
     private const string keyEndNode = "END";
-
+    public  static string flagTagScene = "scene-";
     /// <summary>
     /// response class
     /// </summary>
@@ -35,6 +35,7 @@ public class DialogueObject : MonoBehaviour
         public string text;
         public List<string> tags;
         public List<Response> responses;
+        public string sceneTag = "";
 
         /// <summary>
         /// if we got to end node
@@ -149,7 +150,7 @@ public class DialogueObject : MonoBehaviour
                 curNode.title = title;
                 curNode.text = messsageText;
                 curNode.tags = new List<string>(tags.Split(new string[] { " " }, StringSplitOptions.None));
-
+                curNode.sceneTag = curNode.tags.Find(m=> m.StartsWith(flagTagScene));
                 if (curNode.tags.Contains(keyStartNode))
                 {
                     UnityEngine.Assertions.Assert.IsTrue(null == titleOfStartNode);
@@ -203,6 +204,20 @@ public class DialogueObject : MonoBehaviour
                         curResponse.displayText = curResponseData.Substring(0, destinationStart);
                     node.responses.Add(curResponse);
                 }
+        }
+        /// <summary>
+        /// find title by tag
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        public string findTitleNameWithTag(string tag)
+        {
+            foreach (var key in this.nodes.Values)
+            {
+                if (key.sceneTag == flagTagScene+tag)
+                    return key.title;
+            }
+            return "";
         }
     }
 }
