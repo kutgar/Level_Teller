@@ -44,6 +44,7 @@ public class StoryAgent : MonoBehaviour
                 Debug.Log("0");
                 break;
             default:
+                Debug.Log(getCurrentNode().text);
                 break;
         }
     }

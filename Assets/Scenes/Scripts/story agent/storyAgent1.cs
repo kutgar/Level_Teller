@@ -34,6 +34,7 @@ public class storyAgent1 : StoryAgent
                 break;
             default:
                 Debug.Log("defualt");
+                Debug.Log(getCurrentNode().text);
                 break;
         }
     }
